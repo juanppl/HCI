@@ -1,3 +1,8 @@
+using HCI.WebApi.HciDbContext;
+using HCI.WebApi.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +11,23 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IRolService, RolService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IEspecialidadService, EspecialidadService>();
+builder.Services.AddScoped<IMedicoEspecialidadService, MedicoEspecialidadService>();
+builder.Services.AddScoped<ICitaService, CitaService>();
+builder.Services.AddScoped<ITurnoService, TurnoService>();
+
+builder.Services.AddDbContext<HCIContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("HCIConnection")));
+
+builder.Services.AddCors(c => c.AddPolicy("MainPolicy", b =>
+{
+    b.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+}));
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
