@@ -223,6 +223,10 @@
                 .HasColumnName("fecha_turno");  // Nombre de columna
 
             modelBuilder.Entity<Turno>()
+                .Property(t => t.FechaTurnoFin)
+                .HasColumnName("fecha_turno_fin");
+
+            modelBuilder.Entity<Turno>()
                 .Property(t => t.Estado)
                 .HasMaxLength(20)
                 .HasColumnName("estado");  // Nombre de columna

@@ -1,5 +1,6 @@
 ﻿using HCI.WebApi.HciDbContext.Models;
 using HCI.WebApi.Services;
+using HCI.WebApi.Services.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace HCI.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CrearEspecialidad([FromBody] Especialidad especialidad)
+        public async Task<IActionResult> CrearEspecialidad([FromBody] EspecialidadDTO especialidad)
         {
             if (especialidad == null) return BadRequest("La especialidad no puede ser nula.");
 
@@ -41,7 +42,7 @@ namespace HCI.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarEspecialidad(int id, [FromBody] Especialidad especialidad)
+        public async Task<IActionResult> ActualizarEspecialidad(int id, [FromBody] EspecialidadDTO especialidad)
         {
             if (especialidad == null || id != especialidad.IdEspecialidad) return BadRequest("Los datos de la especialidad son incorrectos.");
 

@@ -1,6 +1,7 @@
 ﻿using HCI.WebApi.HciDbContext.Models;
 using HCI.WebApi.HciDbContext;
 using Microsoft.EntityFrameworkCore;
+using HCI.WebApi.Services.DTO;
 
 namespace HCI.WebApi.Services
 {
@@ -14,11 +15,18 @@ namespace HCI.WebApi.Services
         }
 
         // Crear un nuevo Turno
-        public async Task<Turno> CrearTurnoAsync(Turno turno)
+        public async Task<Turno> CrearTurnoAsync(TurnoDTO turno)
         {
-            _context.Turnos.Add(turno);
+            var newTurno = new Turno
+            {
+                IdMedicoEspecialidad = turno.IdMedicoEspecialidad,
+                FechaTurno = turno.FechaTurno,
+                FechaTurnoFin = turno.FechaTurnoFin,
+                Estado = "OK"
+            };
+            _context.Turnos.Add(newTurno);
             await _context.SaveChangesAsync();
-            return turno;
+            return newTurno;
         }
 
         // Obtener todos los Turnos

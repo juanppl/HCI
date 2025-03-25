@@ -1,5 +1,6 @@
 ﻿using HCI.WebApi.HciDbContext.Models;
 using HCI.WebApi.Services;
+using HCI.WebApi.Services.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace HCI.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CrearCita([FromBody] Cita cita)
+        public async Task<IActionResult> CrearCita([FromBody] CitaDTO cita)
         {
             if (cita == null) return BadRequest("La cita no puede ser nula.");
 

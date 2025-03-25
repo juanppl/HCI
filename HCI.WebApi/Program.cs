@@ -2,6 +2,7 @@ using HCI.WebApi.HciDbContext;
 using HCI.WebApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,12 @@ builder.Services.AddCors(c => c.AddPolicy("MainPolicy", b =>
     b.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
 }));
 
+//builder.Services.AddControllers().AddNewtonsoftJson(options =>
+//{
+//    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+//    options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+//});
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
@@ -43,5 +50,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("MainPolicy");
 
 app.Run();

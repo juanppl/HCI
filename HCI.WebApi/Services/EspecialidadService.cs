@@ -1,6 +1,7 @@
 ﻿using HCI.WebApi.HciDbContext.Models;
 using HCI.WebApi.HciDbContext;
 using Microsoft.EntityFrameworkCore;
+using HCI.WebApi.Services.DTO;
 
 namespace HCI.WebApi.Services
 {
@@ -14,11 +15,16 @@ namespace HCI.WebApi.Services
         }
 
         // Crear una nueva Especialidad
-        public async Task<Especialidad> CrearEspecialidadAsync(Especialidad especialidad)
+        public async Task<Especialidad> CrearEspecialidadAsync(EspecialidadDTO especialidad)
         {
-            _context.Especialidades.Add(especialidad);
+            var newEspecialidad = new Especialidad
+            {
+                NombreEspecialidad = especialidad.NombreEspecialidad,
+                Descripcion = especialidad.Descripcion
+            };
+            _context.Especialidades.Add(newEspecialidad);
             await _context.SaveChangesAsync();
-            return especialidad;
+            return newEspecialidad;
         }
 
         // Obtener todas las Especialidades
@@ -34,9 +40,16 @@ namespace HCI.WebApi.Services
         }
 
         // Actualizar una Especialidad
-        public async Task<bool> ActualizarEspecialidadAsync(Especialidad especialidad)
+        public async Task<bool> ActualizarEspecialidadAsync(EspecialidadDTO especialidad)
         {
-            _context.Especialidades.Update(especialidad);
+            var foundEspecialidad = await _context.Especialidades.FirstOrDefaultAsync(e => e.IdEspecialidad == especialidad.IdEspecialidad);
+            if (foundEspecialidad == null)
+            {
+                throw new Exception("Especilidad not found");
+            }
+            foundEspecialidad.NombreEspecialidad = especialidad.NombreEspecialidad;
+            foundEspecialidad.Descripcion = especialidad.Descripcion;
+            _context.Especialidades.Update(foundEspecialidad);
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }

@@ -1,5 +1,6 @@
 ﻿using HCI.WebApi.HciDbContext.Models;
 using HCI.WebApi.Services;
+using HCI.WebApi.Services.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace HCI.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CrearRol([FromBody] Rol rol)
+        public async Task<IActionResult> CrearRol([FromBody] RolDTO rol)
         {
             if (rol == null) return BadRequest("El rol no puede ser nulo.");
 
@@ -41,7 +42,7 @@ namespace HCI.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarRol(int id, [FromBody] Rol rol)
+        public async Task<IActionResult> ActualizarRol(int id, [FromBody] RolDTO rol)
         {
             if (rol == null || id != rol.IdRol) return BadRequest("Los datos del rol son incorrectos.");
 

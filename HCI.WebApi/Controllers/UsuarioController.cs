@@ -1,5 +1,6 @@
 ﻿using HCI.WebApi.HciDbContext.Models;
 using HCI.WebApi.Services;
+using HCI.WebApi.Services.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +18,22 @@ namespace HCI.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CrearUsuario([FromBody] Usuario usuario)
+        public async Task<IActionResult> CrearUsuario([FromBody] UsuarioDTO usuario)
         {
             if (usuario == null) return BadRequest("El usuario no puede ser nulo.");
 
-            var nuevoUsuario = await _usuarioService.CrearUsuarioAsync(usuario);
+            var user = new Usuario
+            {
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Telefono = usuario.Telefono,
+                Direccion = usuario.Direccion,
+                Email = usuario.Email,
+                IdRol = usuario.IdRol,
+                FechaRegistro = DateTime.Now,
+            };
+
+            var nuevoUsuario = await _usuarioService.CrearUsuarioAsync(user);
             return CreatedAtAction(nameof(ObtenerUsuario), new { id = nuevoUsuario.IdUsuario }, nuevoUsuario);
         }
 
@@ -41,11 +53,23 @@ namespace HCI.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarUsuario(int id, [FromBody] Usuario usuario)
+        public async Task<IActionResult> ActualizarUsuario(int id, [FromBody] UsuarioDTO usuario)
         {
             if (usuario == null || id != usuario.IdUsuario) return BadRequest("Los datos del usuario son incorrectos.");
 
-            var actualizado = await _usuarioService.ActualizarUsuarioAsync(usuario);
+            var user = new Usuario
+            {
+                IdUsuario = (int)usuario.IdUsuario,
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Telefono = usuario.Telefono,
+                Direccion = usuario.Direccion,
+                Email = usuario.Email,
+                IdRol = usuario.IdRol,
+                FechaRegistro = DateTime.Now,
+            };
+
+            var actualizado = await _usuarioService.ActualizarUsuarioAsync(user);
             if (!actualizado) return NotFound($"Usuario con id {id} no encontrado.");
 
             return NoContent();

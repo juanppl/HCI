@@ -1,16 +1,20 @@
 ﻿using HCI.WebApi.HciDbContext.Models;
 using HCI.WebApi.HciDbContext;
 using Microsoft.EntityFrameworkCore;
+using HCI.WebApi.Services.DTO;
+using AutoMapper;
 
 namespace HCI.WebApi.Services
 {
     public class UsuarioService : IUsuarioService
     {
         private readonly HCIContext _context;
+        private readonly IMapper _mapper;
 
-        public UsuarioService(HCIContext context)
+        public UsuarioService(HCIContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // Crear un nuevo Usuario
@@ -22,9 +26,13 @@ namespace HCI.WebApi.Services
         }
 
         // Obtener todos los Usuarios
-        public async Task<List<Usuario>> ObtenerUsuariosAsync()
+        public async Task<List<UsuarioDTO>> ObtenerUsuariosAsync()
         {
-            return await _context.Usuarios.Include(u => u.Rol).ToListAsync();
+            var usuarios = await _context.Usuarios
+                .Include(u => u.MedicoEspecialidad).ThenInclude(m => m.Especialidad)
+                .Include(u => u.Rol)
+                .ToListAsync();
+            return _mapper.Map<List<UsuarioDTO>>(usuarios);
         }
 
         // Obtener un Usuario por ID

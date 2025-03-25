@@ -1,6 +1,7 @@
 ﻿using HCI.WebApi.HciDbContext.Models;
 using HCI.WebApi.HciDbContext;
 using Microsoft.EntityFrameworkCore;
+using HCI.WebApi.Services.DTO;
 
 namespace HCI.WebApi.Services
 {
@@ -14,11 +15,16 @@ namespace HCI.WebApi.Services
         }
 
         // Crear un nuevo Rol
-        public async Task<Rol> CrearRolAsync(Rol rol)
+        public async Task<Rol> CrearRolAsync(RolDTO rol)
         {
-            _context.Roles.Add(rol);
+            var newRol = new Rol
+            {
+                NombreRol = rol.NombreRol,
+                Descripcion = rol.Descripcion,
+            };
+            _context.Roles.Add(newRol);
             await _context.SaveChangesAsync();
-            return rol;
+            return newRol;
         }
 
         // Obtener todos los Roles
@@ -34,9 +40,15 @@ namespace HCI.WebApi.Services
         }
 
         // Actualizar un Rol
-        public async Task<bool> ActualizarRolAsync(Rol rol)
+        public async Task<bool> ActualizarRolAsync(RolDTO rol)
         {
-            _context.Roles.Update(rol);
+            var foundRol = await _context.Roles.FirstOrDefaultAsync(r => r.IdRol == rol.IdRol);
+            if (foundRol == null) {
+                throw new Exception("No Rol found");
+            }
+            foundRol.NombreRol = rol.NombreRol;
+            foundRol.Descripcion = rol.Descripcion;
+            _context.Roles.Update(foundRol);
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }
