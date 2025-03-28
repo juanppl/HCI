@@ -6,6 +6,27 @@
 #### Diagrama de arquitectura
 ![Overview of the platform](https://github.com/juanppl/HCI/blob/main/Assets/arqutectura%20hci.png)
 
+## Servicios
+
+#### Servicios cita
+![Overview of the platform](https://github.com/juanppl/HCI/blob/main/Assets/servicios-cita.png)
+
+#### Servicios usuarios
+![Overview of the platform](https://github.com/juanppl/HCI/blob/main/Assets/servicios-usuario.png)
+
+#### Servicios turnos
+![Overview of the platform](https://github.com/juanppl/HCI/blob/main/Assets/servicios-turno.png)
+
+#### Servicios roles
+![Overview of the platform](https://github.com/juanppl/HCI/blob/main/Assets/servicios-rol.png)
+
+#### Servicios medico especialidad
+![Overview of the platform](https://github.com/juanppl/HCI/blob/main/Assets/servicios-medicoesp.png)
+
+#### Servicios especialidades
+![Overview of the platform](https://github.com/juanppl/HCI/blob/main/Assets/servicios-especialidad.png)
+
+
 # .NET 
 
 To build and run the project:
